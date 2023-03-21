@@ -3,6 +3,7 @@ var pmx = require('pmx');
 var pm2 = require('pm2')
 const http = require('http');
 const crypto = require('crypto');
+const util = require('util');
 
 pmx.initModule({
   widget : {
@@ -38,12 +39,11 @@ pmx.initModule({
         res.end();
     }).listen(10367);
 
-  pmx.action('env', function(reply) {
-    pm2.list(function(err, list) {
-        console.log(list)
-    })
+  pmx.action('env', async function(reply) {
+    const list = util.promisify(pm2.list);
+    const data = await list();
     return reply({
-      env: process.env
+      data
     });
   });
 
