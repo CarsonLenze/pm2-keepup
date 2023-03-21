@@ -1,5 +1,8 @@
 
 var pmx = require('pmx');
+const http = require('http');
+const crypto = require('crypto');
+
 pmx.initModule({
   widget : {
     logo : 'https://app.keymetrics.io/img/logo/keymetrics-300.png',
@@ -20,7 +23,19 @@ pmx.initModule({
 
 }, function(err, conf) {
 
-   
+    http.createServer(function (req, res) {
+        const secret = 'password'
+        req.on('data', function(chunk) {
+            let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
+    
+            if (req.headers['x-hub-signature'] == sig) {
+                //exec('cd ' + repo + ' && git pull');
+                res.write('Hello World!');
+            }
+        });
+    
+        res.end();
+    }, 10367)
 
   pmx.action('env', function(reply) {
     return reply({
