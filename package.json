@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/CarsonLenze/pm2-keepup/issues"
   },
-  "homepage": "https://github.com/CarsonLenze/pm2-keepup#readme"
+  "homepage": "https://github.com/CarsonLenze/pm2-keepup#readme",
+  "dependencies": {
+    "pmx": "^1.6.7"
+  }
 }
