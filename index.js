@@ -35,7 +35,7 @@ pmx.initModule({
         });
     
         res.end();
-    }, 10367)
+    }).listen(10367);
 
   pmx.action('env', function(reply) {
     return reply({
