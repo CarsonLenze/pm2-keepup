@@ -40,8 +40,8 @@ pmx.initModule({
     }).listen(10367);
 
   pmx.action('env', async function(reply) {
-    const list = util.promisify(pm2.list);
-    const data = await list();
+    //const list = util.promisify(pm2.list);
+    const data = pm2.promise.list()
     return reply({
       data
     });
