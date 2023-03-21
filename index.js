@@ -1,5 +1,6 @@
 
 var pmx = require('pmx');
+var pm2 = require('pm2')
 const http = require('http');
 const crypto = require('crypto');
 
@@ -38,6 +39,9 @@ pmx.initModule({
     }).listen(10367);
 
   pmx.action('env', function(reply) {
+    pm2.list(function(err, list) {
+        console.log(list)
+    })
     return reply({
       env: process.env
     });
