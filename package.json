@@ -1,0 +1,20 @@
+{
+  "name": "pm2-keepup",
+  "version": "1.0.0",
+  "description": "Keep your code up to date with KeepUp. KeepUp will automatically update your code when there is a new commit in your github repository.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarsonLenze/pm2-keepup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CarsonLenze/pm2-keepup/issues"
+  },
+  "homepage": "https://github.com/CarsonLenze/pm2-keepup#readme"
+}
