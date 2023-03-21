@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/CarsonLenze/pm2-keepup#readme",
   "dependencies": {
+    "pm2": "^5.3.0",
     "pmx": "^1.6.7"
   }
 }
