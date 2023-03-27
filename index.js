@@ -1,68 +1,60 @@
 
 var pmx = require('pmx');
 var pm2 = require('pm2')
-const http = require('http');
-const crypto = require('crypto');
-const util = require('util');
+const child = require("child_process");
 
 pmx.initModule({
-  widget : {
-    logo : 'https://app.keymetrics.io/img/logo/keymetrics-300.png',
-    theme            : ['#141A1F', '#222222', '#3ff', '#3ff'],
-    el : {
-      probes  : true,
-      actions : true
+  widget: {
+    logo: 'https://app.keymetrics.io/img/logo/keymetrics-300.png',
+    theme: ['#141A1F', '#222222', '#3ff', '#3ff'],
+    el: {
+      probes: true,
+      actions: true
     },
 
-    block : {
-      actions : false,
-      issues  : true,
-      meta    : true,
+    block: {
+      actions: false,
+      issues: true,
+      meta: true,
 
-      main_probes : ['test-probe']
+      main_probes: ['test-probe']
     }
   }
 
-}, async function(err, conf) {
-  const myPromise = new Promise((resolve, reject) => {
-    pm2.list((err, data) => {
-        if (err) return reject(err);
-        resolve(data);
-    })
-  });
+}, async function (err, conf) {
+  //get the list off all apps. filter out the modules
+  const list = (await listApps())
+    .filter(x => !x.pm2_env.axm_options.isModule);
 
-  let data = await myPromise;
-  data = data.filter(x => !x.pm2_env.axm_options.isModule);
-  const paths = data.map(x => x.pm2_env.PWD);
+  //get the paths of the apps
+  const paths = list.map(x => x.pm2_env.PWD);
 
-  pmx.action('env', async function(reply) {
+  // let paths;
+  // for (const app of apps) {
+  //   ex
+  // }
+
+  pmx.action('env', async function (reply) {
     return reply({ paths });
   });
 
-//git rev-parse --is-inside-work-tree
-
-//   var spawn = require('child_process').spawn;
-
-//   pmx.scopedAction('lsof cmd', function(options, res) {
-//     var child = spawn('lsof', []);
-
-//     child.stdout.on('data', function(chunk) {
-//       chunk.toString().split('\n').forEach(function(line) {
-//         /**
-//          * Here we send logs attached to this command
-//          */
-//         res.send(line);
-//       });
-//     });
-
-//     child.stdout.on('end', function(chunk) {
-//       /**
-//        * Then we emit end to finalize the function
-//        */
-//       res.end('end');
-//     });
-
-//   });
-
-
+  //git rev-parse --is-inside-work-tree
 });
+
+async function exec(command) {
+  return new Promise((resolve, reject) => {
+    child.exec(command, (error, stdout, stderr) => {
+      if (error) return reject(error);
+      return resolve({ stdout, stderr });
+    });
+  });
+}
+
+async function listApps() {
+  return new Promise((resolve, reject) => {
+    pm2.list((error, data) => {
+      if (error) return reject(error);
+      resolve(data);
+    })
+  });
+}
