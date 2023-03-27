@@ -34,11 +34,13 @@ pmx.initModule({
       });
       let data = await myPromise;
 
+      //const paths = data.map(x => x.pm2_env.PWD);
+
     return reply({
-      test: data.map(x => x.pm2_env.PWD)
+      data
     });
   });
-
+//git rev-parse --is-inside-work-tree
 
 //   var spawn = require('child_process').spawn;
 
