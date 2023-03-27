@@ -34,6 +34,8 @@ pmx.initModule({
       });
       let data = await myPromise;
 
+      data = data.filter(x => !x.pm2_env.axm_options.isModule);
+
       //const paths = data.map(x => x.pm2_env.PWD);
 
     return reply({
