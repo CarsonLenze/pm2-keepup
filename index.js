@@ -25,20 +25,6 @@ pmx.initModule({
 
 }, function(err, conf) {
 
-    http.createServer(function (req, res) {
-        const secret = 'password'
-        req.on('data', function(chunk) {
-            let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
-    
-            if (req.headers['x-hub-signature'] == sig) {
-                //exec('cd ' + repo + ' && git pull');
-                res.write('Hello World!');
-            }
-        });
-    
-        res.end();
-    }).listen(10367);
-
   pmx.action('env', async function(reply) {
     const myPromise = new Promise((resolve, reject) => {
         pm2.list((err, data) => {
@@ -49,7 +35,7 @@ pmx.initModule({
       let data = await myPromise;
 
     return reply({
-      data
+      test: data.map(x => x.pm2_env.PWD)
     });
   });
 
