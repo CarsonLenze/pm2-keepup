@@ -23,25 +23,22 @@ pmx.initModule({
     }
   }
 
-}, function(err, conf) {
+}, async function(err, conf) {
+  const myPromise = new Promise((resolve, reject) => {
+    pm2.list((err, data) => {
+        if (err) return reject(err);
+        resolve(data);
+    })
+  });
+
+  let data = await myPromise;
+  data = data.filter(x => !x.pm2_env.axm_options.isModule);
+  const paths = data.map(x => x.pm2_env.PWD);
 
   pmx.action('env', async function(reply) {
-    const myPromise = new Promise((resolve, reject) => {
-        pm2.list((err, data) => {
-            if (err) return reject(err);
-            resolve(data);
-        })
-      });
-      let data = await myPromise;
-
-      data = data.filter(x => !x.pm2_env.axm_options.isModule);
-
-      //const paths = data.map(x => x.pm2_env.PWD);
-
-    return reply({
-      data
-    });
+    return reply({ paths });
   });
+
 //git rev-parse --is-inside-work-tree
 
 //   var spawn = require('child_process').spawn;
